@@ -1,0 +1,237 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ------------------------------------------------------------------ *
+ * Design tokens — OKLCH, warm-tinted neutrals, red anchored on the
+ * NorthStar Impex logo. No #000 / #fff anywhere. Light theme only.
+ * ------------------------------------------------------------------ */
+:root {
+  --paper: oklch(0.977 0.005 60);
+  --surface: oklch(0.995 0.0025 70);
+  --surface-2: oklch(0.962 0.006 58);
+
+  --ink: oklch(0.245 0.013 45);
+  --ink-2: oklch(0.45 0.011 45);
+  --ink-3: oklch(0.605 0.009 47);
+
+  --line: oklch(0.905 0.006 55);
+  --line-2: oklch(0.855 0.009 50);
+
+  /* Brand red — the logo star. */
+  --brand: oklch(0.585 0.214 27);
+  --brand-strong: oklch(0.515 0.2 27);
+  --brand-ink: oklch(0.455 0.18 27);
+  --brand-tint: oklch(0.962 0.022 32);
+  --brand-tint-2: oklch(0.905 0.045 30);
+
+  /* Feedback */
+  --success: oklch(0.58 0.13 152);
+  --success-ink: oklch(0.46 0.12 152);
+  --success-tint: oklch(0.955 0.03 152);
+  --danger: oklch(0.555 0.205 27);
+  --danger-ink: oklch(0.475 0.185 27);
+  --danger-tint: oklch(0.955 0.028 28);
+
+  /* Reserved warm metal accent (used sparingly, e.g. locked/idle marks) */
+  --gold: oklch(0.78 0.12 80);
+
+  --ring: oklch(0.585 0.214 27 / 0.45);
+
+  color-scheme: light;
+}
+
+* {
+  border-color: var(--line);
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background-color: var(--paper);
+  color: var(--ink);
+  font-feature-settings: 'cv01', 'ss01';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: var(--brand-tint-2);
+  color: var(--brand-ink);
+}
+
+/* Consistent, on-brand focus ring for keyboard users. */
+:where(a, button, input, textarea, select, [tabindex]):focus-visible {
+  outline: 2px solid transparent;
+  box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--ring);
+  border-radius: 0.4rem;
+}
+
+/* Numerals: tabular where alignment matters. */
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ------------------------------------------------------------------ *
+ * Prose — markdown rendering for theory + labs. Tuned for Simplified
+ * Chinese line length and rhythm.
+ * ------------------------------------------------------------------ */
+.prose-nsi {
+  --tw-prose-body: var(--ink-2);
+  --tw-prose-headings: var(--ink);
+  --tw-prose-bold: var(--ink);
+  --tw-prose-links: var(--brand-ink);
+  --tw-prose-counters: var(--ink-3);
+  --tw-prose-bullets: var(--brand-tint-2);
+  --tw-prose-hr: var(--line);
+  --tw-prose-quotes: var(--ink-2);
+  --tw-prose-quote-borders: var(--brand-tint-2);
+  --tw-prose-code: var(--ink);
+  --tw-prose-th-borders: var(--line-2);
+  --tw-prose-td-borders: var(--line);
+
+  font-size: 1.0625rem;
+  line-height: 1.85;
+  letter-spacing: 0.005em;
+  max-width: 70ch;
+}
+
+.prose-nsi :where(h2, h3, h4) {
+  letter-spacing: -0.01em;
+  scroll-margin-top: 6rem;
+}
+.prose-nsi :where(h2) {
+  font-size: 1.5rem;
+  margin-top: 2.4em;
+  margin-bottom: 0.9em;
+  padding-bottom: 0.4em;
+  border-bottom: 1px solid var(--line);
+}
+.prose-nsi :where(h3) {
+  font-size: 1.2rem;
+  margin-top: 1.9em;
+  margin-bottom: 0.7em;
+}
+/* Lab steps (promoted from bold markers): clear, distinct sub-step headers. */
+.prose-nsi :where(h4) {
+  font-size: 1.08rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-top: 2em;
+  margin-bottom: 0.6em;
+  letter-spacing: -0.005em;
+}
+.prose-nsi :where(strong) {
+  font-weight: 600;
+}
+.prose-nsi :where(a) {
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  font-weight: 500;
+}
+.prose-nsi :where(ul, ol) {
+  padding-left: 1.4em;
+}
+.prose-nsi :where(li) {
+  margin-top: 0.35em;
+  margin-bottom: 0.35em;
+}
+.prose-nsi :where(blockquote) {
+  font-style: normal;
+  background: var(--surface-2);
+  border-radius: 0.75rem;
+  border-left-width: 0;
+  padding: 0.9em 1.2em;
+  position: relative;
+}
+/* Inline code (not inside a highlighted block). */
+.prose-nsi :where(code):not(pre code) {
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 0.86em;
+  background: var(--brand-tint);
+  color: var(--brand-ink);
+  padding: 0.15em 0.4em;
+  border-radius: 0.35rem;
+  font-weight: 500;
+}
+.prose-nsi :where(code):not(pre code)::before,
+.prose-nsi :where(code):not(pre code)::after {
+  content: none;
+}
+.prose-nsi :where(table) {
+  font-size: 0.95rem;
+}
+.prose-nsi :where(img) {
+  border-radius: 0.875rem;
+}
+
+/* ------------------------------------------------------------------ *
+ * Code highlighting — a light theme matched to the palette. Used by
+ * the CodeBlock component (highlight.js token classes).
+ * ------------------------------------------------------------------ */
+.hljs {
+  color: oklch(0.32 0.012 250);
+  background: transparent;
+}
+.hljs-comment,
+.hljs-quote {
+  color: var(--ink-3);
+  font-style: italic;
+}
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-built_in,
+.hljs-name,
+.hljs-tag {
+  color: oklch(0.5 0.19 28);
+}
+.hljs-string,
+.hljs-title,
+.hljs-section,
+.hljs-attribute,
+.hljs-literal,
+.hljs-template-tag,
+.hljs-template-variable,
+.hljs-type,
+.hljs-addition {
+  color: oklch(0.48 0.13 152);
+}
+.hljs-number,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-meta,
+.hljs-link {
+  color: oklch(0.52 0.13 250);
+}
+.hljs-variable,
+.hljs-params {
+  color: oklch(0.5 0.1 65);
+}
+.hljs-attr,
+.hljs-selector-id,
+.hljs-selector-class {
+  color: oklch(0.5 0.13 280);
+}
+.hljs-emphasis {
+  font-style: italic;
+}
+.hljs-strong {
+  font-weight: 600;
+}
+
+/* ------------------------------------------------------------------ *
+ * Motion accessibility — reduce movement, keep comprehension fades.
+ * ------------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

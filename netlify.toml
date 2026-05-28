@@ -1,0 +1,14 @@
+# Netlify auto-detects Next.js and applies @netlify/plugin-nextjs, which
+# wires App Router route handlers (src/app/api/*) to serverless functions
+# and provides the Netlify Blobs context automatically.
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# Required environment variables (set in the Netlify dashboard, not here):
+#   JWT_SECRET     — secret for signing login tokens
+#   ADMIN_SECRET   — gates the admin add-user endpoint
+# Netlify Blobs needs no token when deployed on Netlify; the context is injected.
