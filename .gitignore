@@ -14,6 +14,9 @@ next-env.d.ts
 # netlify
 .netlify/
 
+# local dev data store (file fallback for `npm run dev`)
+.data/
+
 # misc
 .DS_Store
 *.pem

@@ -6,8 +6,12 @@ const EXPIRY = '7d';
 
 function secret(): string {
   const s = process.env.JWT_SECRET;
-  if (!s) throw new Error('JWT_SECRET is not set');
-  return s;
+  if (s) return s;
+  // Zero-config local development; production must set a real secret.
+  if (process.env.NODE_ENV !== 'production') {
+    return 'dev-only-insecure-secret-do-not-use-in-production';
+  }
+  throw new Error('JWT_SECRET is not set');
 }
 
 export function signToken(user: AuthUser): string {

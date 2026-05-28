@@ -18,20 +18,25 @@ and seven AI labs (the six plus a Browser Agents lab). Per-user progress persist
 
 ## Local development
 
+Zero-config: `npm run dev` uses a local JSON store (`.data/blobs.json`) and a dev JWT
+secret, so the full app (login, progress, quizzes) works offline without Netlify.
+
 ```bash
 npm install
-npm run dev          # UI at http://localhost:3000 (login + visuals)
+node scripts/seed-local-user.mjs test@demo.com demo1234 "测试用户"   # create a test login
+npm run dev                                                          # http://localhost:3000
 ```
 
-The API routes use Netlify Blobs, which needs the Netlify context. To run the full backend
-locally (login, progress, quizzes):
+Then log in at `/login` with `test@demo.com` / `demo1234`.
+
+To exercise the real Netlify Blobs backend locally instead, use the Netlify CLI:
 
 ```bash
 npm i -g netlify-cli
-netlify dev          # serves the app + functions + local Blobs
+netlify dev          # serves the app + functions + Netlify Blobs context
 ```
 
-Create a `.env.local` from `.env.example` and set `JWT_SECRET` and `ADMIN_SECRET`.
+In that case create a `.env.local` from `.env.example` with `JWT_SECRET` and `ADMIN_SECRET`.
 
 ## Deploy to Netlify
 

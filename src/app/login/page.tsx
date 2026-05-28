@@ -67,7 +67,7 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="h-11 rounded-lg border border-line-2 bg-paper px-3.5 text-ink outline-none transition-colors duration-150 placeholder:text-ink-3 focus:border-brand"
-                placeholder="you@northstarimpex.com"
+                placeholder="you@example.com"
               />
             </div>
 

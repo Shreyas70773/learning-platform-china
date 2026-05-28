@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "add-user": "node scripts/add-user.mjs"
+    "add-user": "node scripts/add-user.mjs",
+    "seed-local": "node scripts/seed-local-user.mjs"
   },
   "dependencies": {
     "@netlify/blobs": "^8.1.0",
