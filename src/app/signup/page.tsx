@@ -11,9 +11,10 @@ import { useAuth } from '@/components/providers/auth';
 import { ApiError } from '@/lib/api';
 import { PLATFORM_SHORT } from '@/lib/brand';
 
-export default function LoginPage() {
-  const { status, login } = useAuth();
+export default function SignupPage() {
+  const { status, signup } = useAuth();
   const router = useRouter();
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -26,12 +27,16 @@ export default function LoginPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
+    if (password.length < 6) {
+      setError('密码至少需要 6 位');
+      return;
+    }
     setLoading(true);
     try {
-      await login(email, password);
+      await signup(name, email, password);
       router.replace('/dashboard');
     } catch (err) {
-      setError(err instanceof ApiError ? err.message : '登录失败，请稍后重试');
+      setError(err instanceof ApiError ? err.message : '注册失败，请稍后重试');
       setLoading(false);
     }
   }
@@ -52,10 +57,26 @@ export default function LoginPage() {
         </div>
 
         <div className="rounded-2xl border border-line bg-surface p-7 shadow-md sm:p-8">
-          <h1 className="font-display text-2xl font-bold tracking-tight text-ink">欢迎回来</h1>
-          <p className="mt-1.5 text-sm text-ink-3">登录以继续你的学习。</p>
+          <h1 className="font-display text-2xl font-bold tracking-tight text-ink">创建账号</h1>
+          <p className="mt-1.5 text-sm text-ink-3">注册后即可开始学习，进度会单独为你保存。</p>
 
           <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-4" noValidate>
+            <div className="flex flex-col gap-1.5">
+              <label htmlFor="name" className="text-sm font-medium text-ink-2">
+                姓名
+              </label>
+              <input
+                id="name"
+                type="text"
+                autoComplete="name"
+                required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="h-11 rounded-lg border border-line-2 bg-paper px-3.5 text-ink outline-none transition-colors duration-150 placeholder:text-ink-3 focus:border-brand"
+                placeholder="你的名字"
+              />
+            </div>
+
             <div className="flex flex-col gap-1.5">
               <label htmlFor="email" className="text-sm font-medium text-ink-2">
                 邮箱
@@ -79,12 +100,13 @@ export default function LoginPage() {
               <input
                 id="password"
                 type="password"
-                autoComplete="current-password"
+                autoComplete="new-password"
                 required
+                minLength={6}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="h-11 rounded-lg border border-line-2 bg-paper px-3.5 text-ink outline-none transition-colors duration-150 placeholder:text-ink-3 focus:border-brand"
-                placeholder="••••••••"
+                placeholder="至少 6 位"
               />
             </div>
 
@@ -99,15 +121,15 @@ export default function LoginPage() {
             )}
 
             <Button type="submit" size="lg" loading={loading} className="mt-1 w-full">
-              登录
+              注册并开始学习
             </Button>
           </form>
         </div>
 
         <p className="mt-5 text-center text-sm text-ink-3">
-          还没有账号？{' '}
-          <Link href="/signup" className="font-medium text-brand-ink hover:underline">
-            立即注册
+          已经有账号了？{' '}
+          <Link href="/login" className="font-medium text-brand-ink hover:underline">
+            去登录
           </Link>
         </p>
       </motion.div>

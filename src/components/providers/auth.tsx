@@ -2,7 +2,7 @@
 
 import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import type { AuthUser } from '@/lib/types';
-import { apiLogin, apiVerify, clearToken, getToken, setToken } from '@/lib/api';
+import { apiLogin, apiSignup, apiVerify, clearToken, getToken, setToken } from '@/lib/api';
 
 type AuthStatus = 'loading' | 'authed' | 'guest';
 
@@ -10,6 +10,7 @@ type AuthContextValue = {
   user: AuthUser | null;
   status: AuthStatus;
   login: (email: string, password: string) => Promise<void>;
+  signup: (name: string, email: string, password: string) => Promise<void>;
   logout: () => void;
 };
 
@@ -51,6 +52,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setStatus('authed');
   }, []);
 
+  const signup = useCallback(async (name: string, email: string, password: string) => {
+    const { token, user } = await apiSignup(name, email, password);
+    setToken(token);
+    setUser(user);
+    setStatus('authed');
+  }, []);
+
   const logout = useCallback(() => {
     clearToken();
     setUser(null);
@@ -58,7 +66,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, status, login, logout }}>
+    <AuthContext.Provider value={{ user, status, login, signup, logout }}>
       {children}
     </AuthContext.Provider>
   );

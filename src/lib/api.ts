@@ -57,6 +57,13 @@ export function apiLogin(email: string, password: string) {
   });
 }
 
+export function apiSignup(name: string, email: string, password: string) {
+  return request<{ token: string; user: AuthUser }>('/api/signup', {
+    method: 'POST',
+    body: JSON.stringify({ name, email, password }),
+  });
+}
+
 export function apiVerify() {
   return request<{ user: AuthUser }>('/api/verify');
 }

@@ -48,22 +48,27 @@ In that case create a `.env.local` from `.env.example` with `JWT_SECRET` and `AD
    - `ADMIN_SECRET` — gates user provisioning
 3. Deploy. The learning video ships at `public/learning-video.mp4`.
 
-## Provisioning users (no public signup)
+## Accounts
 
-The admin creates each account once. Either call the endpoint directly, or use the script:
+Each team member signs up at `/signup` (name + email + password, no email verification) and
+gets their own account and progress. They log in afterwards at `/login`.
+
+The admin can still pre-create accounts (e.g. for a known roster) via the gated endpoint or
+the script — useful but optional now that signup is open:
 
 ```bash
 SITE_URL=https://your-site.netlify.app ADMIN_SECRET=xxxx \
-  node scripts/add-user.mjs someone@northstarimpex.com "their-password" "显示名称"
+  node scripts/add-user.mjs someone@email.com "their-password" "显示名称"
 ```
 
-This POSTs to `/api/admin/add-user` with the `x-admin-secret` header. Users log in at `/login`;
-there is no self-signup.
+`/api/admin/add-user` is gated by the `x-admin-secret` header. If you ever want to close public
+signup behind an invite code, that's a small addition.
 
 ## API routes
 
 | Route | Method | Purpose |
 | --- | --- | --- |
+| `/api/signup` | POST | self-service account creation → JWT (auto-login) |
 | `/api/login` | POST | email + password → JWT (7-day) |
 | `/api/verify` | GET | validate Bearer token |
 | `/api/progress` | GET / POST | read progress / update video & lab completion |
