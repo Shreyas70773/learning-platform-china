@@ -26,7 +26,9 @@ export async function POST(req: Request) {
 
     const authUser = { id: user.id, email: user.email, name: user.name };
     return NextResponse.json({ token: signToken(authUser), user: authUser });
-  } catch {
-    return NextResponse.json({ error: '服务器出错，请稍后重试' }, { status: 500 });
+  } catch (e) {
+    console.error('login failed:', e);
+    const detail = e instanceof Error ? e.message : String(e);
+    return NextResponse.json({ error: `登录失败：${detail}` }, { status: 500 });
   }
 }

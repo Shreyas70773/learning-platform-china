@@ -24,6 +24,9 @@ export const metadata: Metadata = {
   title: 'NorthStar Impex AI 学习平台',
   description: '面向采购团队的 AI 实战学习平台 — 视频、理论、动手实验与理解测试。',
   icons: { icon: '/favicon.svg' },
+  // The UI is Simplified Chinese by design; stop browsers from auto-translating
+  // it, which mutates the DOM and crashes React (insertBefore NotFoundError).
+  other: { google: 'notranslate' },
 };
 
 export const viewport: Viewport = {
@@ -38,7 +41,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="zh-CN" className={`${display.variable} ${mono.variable}`}>
+    <html lang="zh-CN" translate="no" className={`${display.variable} ${mono.variable}`}>
       <body className="min-h-dvh bg-paper font-sans text-ink antialiased">
         <AppProviders>{children}</AppProviders>
       </body>
